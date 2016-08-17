@@ -1,0 +1,83 @@
+<html>
+<head>
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<style>
+body {
+  font-family:roboto;
+  background:#74D7F8;
+  font-size:1.8em;
+}
+.container {
+  text-align:center;
+
+}
+.random {
+  margin-top:20px;
+}
+
+.glyphicon-search {
+  font-size:19px;
+  color:white;
+  background-color:green;
+  cursor:pointer;
+}
+
+a:link, a:hover, a:visited, a:active {
+  color: #594545;
+  text-decoration: none;
+}
+
+
+</style>
+
+</head>
+
+<body>
+  <div class="container">
+  <h2>Wikipedia Viewer</h2>
+  <a href="https://en.wikipedia.org/wiki/Special:Random" target=blank><p class="lead random">Random Wikipedia article <span class="glyphicon glyphicon-send"></span></p></a>
+  <div class=input-group>
+    <input class="form-control search" id="search" type="text"> 
+    <span class="glyphicon glyphicon-search input-group-addon" id="searchButton"></span>
+  </div>
+  <!-- <ul id="list" class="list-group"></ul> -->
+  
+  <ul class="list-group" id="list"></ul>
+  
+</div>
+
+  <script>$(document).ready(function(){
+$("#searchButton").click(function(){
+  var search=$("#search").val();
+  var url='https://en.wikipedia.org/w/api.php?action=opensearch&search='+ search + '&format=json&callback=?';
+
+  $.ajax( {
+    type: "GET",
+    url: url,
+    dataType: 'json',
+    success: function(data) {
+
+      $("#list").html("");
+      
+      for (i=0;i<data[1].length;i++) {
+        
+        $("#list").append('<a target=blank; href='+data[3][i]+'><li class="list-group-item"><strong>'+data[1][i]+'</strong><p>'+data[2][i]+'</p></li></a>');
+
+      }
+    },
+    
+    error: function(errorM){
+      alert("It didn't work!")
+    }
+  });
+});
+});
+</script>
+  
+</body>
+
+</html>
